@@ -111,7 +111,10 @@ http_archive(
 
 load("@rules_foreign_cc//foreign_cc:repositories.bzl", "rules_foreign_cc_dependencies")
 
-rules_foreign_cc_dependencies()
+rules_foreign_cc_dependencies(
+    register_default_tools = False,
+    register_built_tools = False
+)
 
 # GoogleTest/GoogleMock framework. Used by most unit-tests.
 # Last updated 2021-07-02.

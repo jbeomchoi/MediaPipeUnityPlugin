@@ -13,8 +13,8 @@ namespace Mediapipe
 {
   public class CalculatorGraph : MpResourceHandle
   {
-    public delegate IntPtr NativePacketCallback(IntPtr graphPtr, IntPtr packetPtr);
-    public delegate Status PacketCallback<TPacket, TValue>(TPacket packet) where TPacket : Packet<TValue>;
+    public delegate Status.StatusArgs NativePacketCallback(IntPtr graphPtr, int streamId, IntPtr packetPtr);
+    public delegate void PacketCallback<TPacket, TValue>(TPacket packet) where TPacket : Packet<TValue>;
 
     public CalculatorGraph() : base()
     {
@@ -71,9 +71,9 @@ namespace Mediapipe
       return config;
     }
 
-    public Status ObserveOutputStream(string streamName, NativePacketCallback nativePacketCallback, bool observeTimestampBounds = false)
+    public Status ObserveOutputStream(string streamName, int streamId, NativePacketCallback nativePacketCallback, bool observeTimestampBounds = false)
     {
-      UnsafeNativeMethods.mp_CalculatorGraph__ObserveOutputStream__PKc_PF_b(mpPtr, streamName, nativePacketCallback, observeTimestampBounds, out var statusPtr).Assert();
+      UnsafeNativeMethods.mp_CalculatorGraph__ObserveOutputStream__PKc_PF_b(mpPtr, streamName, streamId, nativePacketCallback, observeTimestampBounds, out var statusPtr).Assert();
 
       GC.KeepAlive(this);
       return new Status(statusPtr);
@@ -87,7 +87,7 @@ namespace Mediapipe
         try
         {
           var packet = (TPacket)Activator.CreateInstance(typeof(TPacket), packetPtr, false);
-          status = packetCallback(packet);
+          packetCallback(packet);
         }
         catch (Exception e)
         {
