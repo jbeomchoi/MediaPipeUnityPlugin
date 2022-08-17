@@ -19,7 +19,7 @@ jobs:
       - name: Build libmediapipe_c.dylib
         run: |
           unset ANDROID_NDK_HOME
-          python build.py build --bazel_build_opts "--experimental_scale_timeouts=10.0 --http_timeout_scaling=10.0" --desktop cpu --opencv cmake -vv
+          python build.py build --desktop cpu --opencv cmake -vv
       - name: Upload libmediapipe_c.dylib
         uses: actions/upload-artifact@v2
         with:
