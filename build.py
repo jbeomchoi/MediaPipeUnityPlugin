@@ -249,7 +249,7 @@ class BuildCommand(Command):
     if self.desktop == 'gpu':
       commands += ['--copt', '-DMESA_EGL_NO_X11_HEADERS', '--copt', '-DEGL_NO_X11']
     else:
-      commands += ['--define', 'MEDIAPIPE_DISABLE_GPU=1', '--macos_minimum_os', '11.0', '--cpu', 'darwin_arm64']
+      commands += ['--define', 'MEDIAPIPE_DISABLE_GPU=1', '--macos_minimum_os', '11.0']
 
     commands += self._build_opencv_switch()
 
